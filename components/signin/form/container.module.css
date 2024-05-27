@@ -1,0 +1,18 @@
+.article {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.formDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

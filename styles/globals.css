@@ -2,14 +2,16 @@
   --color-main: #648894;
 }
 
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Pretendard";
+  color: #1c1c1c;
 }
 
-body, html {
+body,
+html {
   width: 100%;
   height: 100%;
 }
@@ -18,7 +20,8 @@ body, html {
   height: 100%;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 

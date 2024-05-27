@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+.container a {
+  color: #1c1c1c;
+  font-size: 14px;
+}
