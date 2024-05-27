@@ -1,0 +1,23 @@
+.logoContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 100%;
+    background-color: var(--color-main);
+}
+
+.logo {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.logoBox {
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
