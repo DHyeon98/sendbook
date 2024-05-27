@@ -1,14 +1,17 @@
-import { Form } from "./form/context/form";
+import { Form } from "../common/form/context/form";
 import LinkList from "./linkList/linkList";
 import TextBox from "./textBox/textBox";
 import styles from "./signin.module.css";
 
-export default function SigninContainer() {
+export default function Signin() {
+  const submitFunc = (data: any) => {
+    console.log(data);
+  };
   return (
     <article className={styles.article}>
       <div className={styles.container}>
         <TextBox />
-        <Form>
+        <Form submitFunc={submitFunc}>
           <div className={styles.formDiv}>
             <Form.Label htmlFor="email">이메일</Form.Label>
             <Form.Email />
@@ -17,7 +20,7 @@ export default function SigninContainer() {
             <Form.Label htmlFor="password">비밀번호</Form.Label>
             <Form.Password />
           </div>
-          <Form.Submit />
+          <Form.Submit>로그인</Form.Submit>
         </Form>
         <LinkList />
       </div>

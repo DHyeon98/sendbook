@@ -1,0 +1,12 @@
+.textBox {
+  padding-bottom: 30px;
+}
+.textBox strong {
+  color: var(--color-main);
+}
+.textBox p {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1c1c1c;
+  line-height: 36px;
+}
