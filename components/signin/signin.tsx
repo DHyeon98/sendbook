@@ -1,7 +1,7 @@
-import { Form } from "./context/form";
-import LinkList from "../linkList/linkList";
-import TextBox from "../textBox/textBox";
-import styles from "./container.module.css";
+import { Form } from "./form/context/form";
+import LinkList from "./linkList/linkList";
+import TextBox from "./textBox/textBox";
+import styles from "./signin.module.css";
 
 export default function SigninContainer() {
   return (
