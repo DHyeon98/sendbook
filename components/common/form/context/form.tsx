@@ -31,6 +31,11 @@ interface LabelType {
   children: ReactNode;
 }
 
+interface SubmitType {
+  isLoading: boolean;
+  children: ReactNode;
+}
+
 interface FormContextType {
   register: UseFormRegister<InputValue>;
   errors: FieldErrors<InputValue>;
@@ -67,7 +72,9 @@ function Input({ type, name, placeholder, validation }: InputType) {
   return (
     <>
       <input
-        className={styles.input}
+        className={
+          errors[name] ? `${styles.input} ${styles.error}` : styles.input
+        }
         id={name}
         placeholder={placeholder}
         type={type}
@@ -161,9 +168,15 @@ function Label({ htmlFor, children }: LabelType) {
   );
 }
 
-function Submit({ children }: { children: ReactNode }) {
+function Submit({ children, isLoading }: SubmitType) {
   return (
-    <button className={styles.button} type="submit">
+    <button
+      className={
+        isLoading ? `${styles.button} ${styles.loading}` : styles.button
+      }
+      type="submit"
+      disabled={isLoading}
+    >
       {children}
     </button>
   );

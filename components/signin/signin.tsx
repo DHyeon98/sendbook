@@ -2,8 +2,10 @@ import { Form } from "../common/form/context/form";
 import LinkList from "./linkList/linkList";
 import TextBox from "./textBox/textBox";
 import styles from "./signin.module.css";
+import { useState } from "react";
 
 export default function Signin() {
+  const [loading, setLoading] = useState(false);
   const submitFunc = (data: any) => {
     console.log(data);
   };
@@ -20,7 +22,7 @@ export default function Signin() {
             <Form.Label htmlFor="password">비밀번호</Form.Label>
             <Form.Password />
           </div>
-          <Form.Submit>로그인</Form.Submit>
+          <Form.Submit isLoading={loading}>로그인</Form.Submit>
         </Form>
         <LinkList />
       </div>
