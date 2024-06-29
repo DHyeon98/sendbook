@@ -2,9 +2,12 @@ import { ReactNode, createContext, useContext } from "react";
 import styles from "./form.module.css";
 import {
   FieldErrors,
+  FormProvider,
   UseFormGetValues,
   UseFormRegister,
+  UseFormReturn,
   useForm,
+  useFormContext,
 } from "react-hook-form";
 
 interface InputValue {
@@ -16,7 +19,8 @@ interface InputValue {
 
 interface FormType {
   children: ReactNode;
-  submitFunc: (data: InputValue) => void;
+  submitFunc: (data: any) => void;
+  methods: UseFormReturn;
 }
 
 interface InputType {
@@ -42,33 +46,21 @@ interface FormContextType {
   getValues: UseFormGetValues<InputValue>;
 }
 
-const formContext = createContext<FormContextType | undefined>(undefined);
-
-export function Form({ children, submitFunc }: FormType) {
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<InputValue>({ mode: "onBlur" });
-  const onSubmit = (data: InputValue) => {
-    submitFunc(data);
-  };
+export function Form({ children, submitFunc, methods }: FormType) {
   return (
-    <formContext.Provider value={{ register, errors, getValues }}>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider {...methods}>
+      <form className={styles.form} onSubmit={methods.handleSubmit(submitFunc)}>
         {children}
       </form>
-    </formContext.Provider>
+    </FormProvider>
   );
 }
 
 function Input({ type, name, placeholder, validation }: InputType) {
-  const context = useContext(formContext);
-  if (!context) {
-    throw new Error("유효한 위치에서 사용해야합니다.");
-  }
-  const { register, errors } = context;
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <input
@@ -81,7 +73,9 @@ function Input({ type, name, placeholder, validation }: InputType) {
         {...register(name, validation)}
       />
       {errors[name] && (
-        <span className={styles.errorText}>{errors[name]?.message}</span>
+        <span className={styles.errorText}>
+          {errors[name]?.message as string}
+        </span>
       )}
     </>
   );
@@ -123,12 +117,7 @@ function Password() {
   );
 }
 
-function PasswordConfirm() {
-  const context = useContext(formContext);
-  if (!context) {
-    throw new Error("유효한 위치에서 사용해야합니다.");
-  }
-  const { getValues } = context;
+function PasswordConfirm({ passwordValue }: { passwordValue: string }) {
   return (
     <Input
       type="password"
@@ -141,7 +130,7 @@ function PasswordConfirm() {
           message: "8자 이상으로 작성해주세요.",
         },
         validate: (value: string) =>
-          value === getValues("password") || "비밀번호가 일치하지 않습니다.",
+          value === passwordValue || "비밀번호가 일치하지 않습니다.",
       }}
     />
   );
@@ -182,6 +171,7 @@ function Submit({ children, isLoading }: SubmitType) {
   );
 }
 
+Form.Input = Input;
 Form.Email = Email;
 Form.Password = Password;
 Form.PasswordConfirm = PasswordConfirm;
