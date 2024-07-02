@@ -7,30 +7,22 @@ import TextBox from "./textBox/textBox";
 import LinkList from "./linkList/linkList";
 import Spinner from "../common/spinner/spinner";
 import styles from "../signin/signin.module.css";
+import { useForm } from "react-hook-form";
+import { signUpApi } from "@/apis/firebaseApi";
+import { SignUpType } from "@/types/signup";
 
 export default function Signup() {
   const router = useRouter();
+  const methods = useForm();
+  const { getValues } = methods;
   const [loading, setLoading] = useState(false);
-  const submitFunc = async (data: any) => {
-    console.log(data);
+  const submitFunc = async (data: SignUpType) => {
     try {
-      setLoading(true);
-      // email과 password를 사용해 계정 생성
-      // 첫 번째 인자 : 인증 인스턴스, 두 번째 인자 : 이메일, 세 번째 인자: 패스워드
-      // 성공 시 즉시 로그인, 실패할 경우는 계정이 이미 존재하거나 패스워드가 유효하지 않은 경우.
-      const credentials = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      console.log(credentials.user);
-      // 첫 번째 인자 : 업데이트 할 프로필, 두 번째 인자 : 닉네임 값 or 이미지 url
-      await updateProfile(credentials.user, {
-        displayName: data.username,
-      });
+      await signUpApi(data);
       router.replace("/bookmark");
+      setLoading(true);
     } catch {
-      console.log("이메일이 중복되었습니다.");
+      console.log("에러");
     } finally {
       setLoading(false);
     }
@@ -39,7 +31,7 @@ export default function Signup() {
     <article className={styles.article}>
       <div className={styles.container}>
         <TextBox />
-        <Form submitFunc={submitFunc}>
+        <Form methods={methods} submitFunc={submitFunc}>
           <div className={styles.formDiv}>
             <Form.Label htmlFor="username">닉네임</Form.Label>
             <Form.Username />
@@ -54,7 +46,7 @@ export default function Signup() {
           </div>
           <div className={styles.formDiv}>
             <Form.Label htmlFor="passwordConfirm">비밀번호 확인</Form.Label>
-            <Form.PasswordConfirm />
+            <Form.PasswordConfirm passwordValue={getValues("password")} />
           </div>
           <Form.Submit isLoading={loading}>
             {loading ? <Spinner /> : "회원가입"}
