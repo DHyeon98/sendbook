@@ -1,5 +1,6 @@
 import { postBookApi } from "@/apis/firebaseApi";
 import { bookSearchApi } from "@/apis/naverBookApi";
+import { useGetBook } from "@/hooks/useGetBook";
 
 export default function Bookmark() {
   const TEST_DATA = {
@@ -12,8 +13,11 @@ export default function Bookmark() {
   const handleClick = async () => {
     await postBookApi(TEST_DATA, "books");
   };
+  const { data } = useGetBook();
   const handleSearch = async () => {
-    await bookSearchApi();
+    // const response = await bookSearchApi();
+    // console.log(response);
+    console.log(data);
   };
   return (
     <div>

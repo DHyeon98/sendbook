@@ -1,7 +1,10 @@
+import { instance } from "@/apis/naverBookApi";
 import { auth } from "@/firebase/firebase";
 import "@/styles/globals.css";
+import axios from "axios";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
+import { SWRConfig } from "swr";
 
 export default function App({ Component, pageProps }: AppProps) {
   const init = async () => {
@@ -13,7 +16,13 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <>
-      <Component {...pageProps} />
+      <SWRConfig
+        value={{
+          fetcher: (url: string) => instance.get(url).then((res) => res.data),
+        }}
+      >
+        <Component {...pageProps} />
+      </SWRConfig>
     </>
   );
 }
